@@ -1,225 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Abundance & Health AI Command Center</title>
-  <link rel="manifest" href="manifest.json">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #121212;
-      color: #e0e0e0;
+    }
+
+    body {
+      background-color: #1a1a1a;
+      color: #ffffff;
+      display: flex;
       height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    header {
-      background-color: #1e1e1e;
-      padding: 15px 20px;
-      border-bottom: 1px solid #333;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    h1 {
-      font-size: 1.1rem;
-      color: #e65c00;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    .container {
-      display: flex;
-      flex: 1;
       overflow: hidden;
     }
-    /* LEFT PANEL SPLIT */
-    .left-panel {
-      width: 320px;
-      background-color: #181818;
-      border-right: 1px solid #2a2a2a;
-      display: flex;
-      flex-direction: column;
+
+    /* Sidebar Styling */
+    .sidebar {
+      width: 300px;
+      background-color: #242424;
+      border-right: 1px solid #333333;
       padding: 20px;
-      gap: 20px;
-    }
-    .panel-section {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 24px;
     }
-    .panel-section-feed {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-    }
-    h2 {
-      font-size: 0.75rem;
-      color: #888;
-      text-transform: uppercase;
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
       letter-spacing: 1px;
-      margin-bottom: 5px;
+      color: #8e8e93;
+      text-transform: uppercase;
+      margin-bottom: 12px;
     }
-    .connection-item {
-      background-color: #222;
-      border-radius: 6px;
-      padding: 12px;
+
+    .card {
+      background-color: #2c2c2e;
+      border-radius: 8px;
+      padding: 14px;
+      border: 1px solid #3a3a3c;
+    }
+
+    .status-badge {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: #30d158;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 12px;
-      border: 1px solid #2c2c2c;
     }
-    .status-dot {
-      width: 10px;
-      height: 10px;
-      background-color: #00e676;
-      border-radius: 50%;
-      box-shadow: 0 0 8px rgba(0, 230, 118, 0.4);
+
+    .card-subtitle {
+      font-size: 12px;
+      color: #8e8e93;
+      margin-top: 4px;
+      margin-left: 16px;
     }
-    .item-title { font-weight: 600; font-size: 0.9rem; color: #fff; }
-    .item-desc { font-size: 0.75rem; color: #888; }
-    
-    /* FEED CONTAINER */
-    .feed-container {
+
+    .feed-item {
+      margin-bottom: 12px;
+    }
+
+    .feed-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .feed-time {
+      font-size: 11px;
+      color: #8e8e93;
+      margin-bottom: 2px;
+    }
+
+    .feed-text {
+      font-size: 13px;
+      color: #d1d1d6;
+    }
+
+    /* Main Workspace Styling */
+    .main-content {
       flex: 1;
-      background-color: #121212;
-      border: 1px solid #2c2c2c;
-      border-radius: 6px;
-      padding: 10px;
-      overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 8px;
     }
-    .feed-item {
-      background-color: #1c1c1c;
-      border-left: 3px solid #e65c00;
-      padding: 8px 10px;
-      border-radius: 3px;
-    }
-    .feed-time { font-size: 0.65rem; color: #777; margin-bottom: 3px; }
-    .feed-text { font-size: 0.8rem; color: #ddd; }
 
-    .test-btn {
-      margin-top: 8px;
-      background-color: #2a2a2a;
-      color: #bbb;
-      border: 1px solid #3d3d3d;
-      padding: 6px 10px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      transition: background 0.2s;
+    .header {
+      background-color: #e65100;
+      color: #ffffff;
+      padding: 16px 24px;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.5px;
     }
-    .test-btn:hover { background-color: #383838; color: #fff; }
 
-    /* RIGHT PANEL */
-    .main-panel {
+    .workspace {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background-color: #121212;
-      padding: 20px;
+      gap: 16px;
       text-align: center;
+      padding: 20px;
     }
-    .launch-btn {
-      background-color: #e65c00;
-      color: #fff;
-      font-weight: bold;
-      font-size: 1rem;
-      padding: 14px 28px;
+
+    .workspace-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #8e8e93;
+      letter-spacing: 1px;
+    }
+
+    .workspace-desc {
+      font-size: 13px;
+      color: #636366;
+      max-width: 420px;
+    }
+
+    /* Launch Button */
+    .btn-launch {
+      background: linear-gradient(180deg, #ff6d00 0%, #e65100 100%);
+      color: #ffffff;
       border: none;
-      border-radius: 6px;
+      padding: 14px 28px;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 8px;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(230, 92, 0, 0.3);
-      transition: transform 0.1s;
-      text-decoration: none;
-      display: inline-block;
-      margin-top: 15px;
+      box-shadow: 0 4px 12px rgba(230, 81, 0, 0.4);
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
     }
-    .launch-btn:hover { transform: translateY(-2px); }
+
+    .btn-launch:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(230, 81, 0, 0.6);
+    }
+
+    .btn-launch:active {
+      transform: translateY(1px);
+    }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Abundance & Health AI Command Center</h1>
-  </header>
-
-  <div class="container">
-    <!-- LEFT PANEL: CONNECTION & LIVE FEED -->
-    <div class="left-panel">
-      
-      <!-- 1 ACTIVE CONNECTION -->
-      <div class="panel-section">
-        <h2>Live Connections</h2>
-        <div class="connection-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="item-title">Shopify UK</div>
-            <div class="item-desc">Connected • Read-Only</div>
-          </div>
-        </div>
+  <!-- Left Sidebar -->
+  <div class="sidebar">
+    <div>
+      <div class="section-title">Live Connections</div>
+      <div class="card">
+        <div class="card-title"><span class="status-badge"></span>Shopify UK</div>
+        <div class="card-subtitle">Connected • Active via Composio</div>
       </div>
-
-      <!-- LIVE FEED SECTION -->
-      <div class="panel-section-feed">
-        <h2>Live Activity Feed</h2>
-        <div class="feed-container" id="feedContainer">
-          <div class="feed-item">
-            <div class="feed-time">Just now</div>
-            <div class="feed-text">Shopify UK webhook listener initialized.</div>
-          </div>
-          <div class="feed-item">
-            <div class="feed-time">2 mins ago</div>
-            <div class="feed-text">Order #1042 sync verified with J&J.</div>
-          </div>
-        </div>
-        <button class="test-btn" onclick="addTestAlert()">+ Add Test Alert</button>
-      </div>
-
     </div>
 
-    <!-- MAIN RIGHT PANEL -->
-    <div class="main-panel">
-      <h2>AI Assistant Workspace</h2>
-      <p style="color: #888; font-size: 0.9rem; margin-top: 8px;">
-        Your read-only Composio integrations are active and connected in the background.
-      </p>
-      <a href="https://gemini.google.com" target="_blank" class="launch-btn">🚀 Launch Gemini Session</a>
+    <div>
+      <div class="section-title">Live Activity Feed</div>
+      <div class="card">
+        <div class="feed-item">
+          <div class="feed-time">Just now</div>
+          <div class="feed-text">Shopify UK webhook listener initialized.</div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-time">2 mins ago</div>
+          <div class="feed-text">Order #1042 sync verified with J&J.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Main Area -->
+  <div class="main-content">
+    <div class="header">ABUNDANCE & HEALTH AI COMMAND CENTER</div>
+
+    <div class="workspace">
+      <div class="workspace-title">AI ASSISTANT WORKSPACE</div>
+      <div class="workspace-desc">Your Composio Shopify integrations are active and ready in Claude Desktop.</div>
+      <button class="btn-launch" onclick="launchClaude()">🚀 Launch Claude Session</button>
     </div>
   </div>
 
   <script>
-    function addTestAlert() {
-      const container = document.getElementById('feedContainer');
-      const newItem = document.createElement('div');
-      newItem.className = 'feed-item';
-      
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      
-      const sampleEvents = [
-        "Shopify UK: New order #1045 placed.",
-        "Altrient C stock level alert on EU warehouse.",
-        "Recharge: Subscription update processed.",
-        "Gmail: Support email received from VIP client."
-      ];
-      const randomEvent = sampleEvents[Math.floor(Math.random() * sampleEvents.length)];
-
-      newItem.innerHTML = `
-        <div class="feed-time">${timeStr}</div>
-        <div class="feed-text">${randomEvent}</div>
-      `;
-      
-      container.prepend(newItem);
+    function launchClaude() {
+      // Electron / Protocol handler trigger for local Claude Desktop app
+      if (window.electronAPI && window.electronAPI.launchClaude) {
+        window.electronAPI.launchClaude();
+      } else {
+        // Fallback to registered local protocol scheme
+        window.location.href = 'claude://';
+      }
     }
   </script>
-
 </body>
 </html>
 
