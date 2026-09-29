@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abundance & Health AI Command Center</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    :root {
+      --brand-accent: #e65c00;
+      --bg-dark: #121212;
+      --panel-bg: #1e1e1e;
+      --status-green: #10b981;
+      --text-main: #f5f5f5;
+      --text-muted: #9ca3af;
+      --border-color: #2e2e2e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+    header {
+      background-color: var(--panel-bg);
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .logo-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+      color: var(--brand-accent);
+    }
+    .app-layout {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 53px);
+    }
+    /* LEFT PANEL: Live Connections */
+    .status-panel {
+      width: 300px;
+      background-color: var(--panel-bg);
+      border-right: 1px solid var(--border-color);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .panel-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    .connection-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .connection-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background-color: #262626;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--status-green);
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+      flex-shrink: 0;
+    }
+    .connection-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .connection-name { font-size: 0.9rem; font-weight: 600; }
+    .connection-sub { font-size: 0.75rem; color: var(--text-muted); }
+    
+    .panel-footer {
+      border-top: 1px solid var(--border-color);
+      padding-top: 15px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* RIGHT PANEL: Launch Area */
+    .launch-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #161616;
+      gap: 20px;
+      padding: 40px;
+      text-align: center;
+    }
+    .launch-btn {
+      background-color: var(--brand-accent);
+      color: #fff;
+      border: none;
+      padding: 16px 36px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .launch-btn:hover {
+      background-color: #ff6a00;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-title">ABUNDANCE & HEALTH <span>AI COMMAND CENTER</span></div>
+  </header>
+
+  <div class="app-layout">
+    
+    <!-- LEFT PANEL: Live Connections -->
+    <div class="status-panel">
+      <div>
+        <div class="panel-title">Live Connections</div>
+        
+        <div class="connection-list">
+          <div class="connection-item">
+            <span class="status-dot"></span>
+            <div class="connection-info">
+              <span class="connection-name">Shopify UK</span>
+              <span class="connection-sub">Read-Only</span>
+            </div>
+          </div>
+
+          <div class="connection-item">
+            <span class="status-dot"></span>
+            <div class="connection-info">
+              <span class="connection-name">Shopify EU</span>
+              <span class="connection-sub">Read-Only</span>
+            </div>
+          </div>
+
+          <div class="connection-item">
+            <span class="status-dot"></span>
+            <div class="connection-info">
+              <span class="connection-name">James & James 3PL</span>
+              <span class="connection-sub">UK & EU Warehouses</span>
+            </div>
+          </div>
+
+          <div class="connection-item">
+            <span class="status-dot"></span>
+            <div class="connection-info">
+              <span class="connection-name">Recharge Subscriptions</span>
+              <span class="connection-sub">Active Subscriptions</span>
+            </div>
+          </div>
+
+          <div class="connection-item">
+            <span class="status-dot"></span>
+            <div class="connection-info">
+              <span class="connection-name">Gmail Support</span>
+              <span class="connection-sub">Support Inbox</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-footer">
+        Composio MCP Gateway: <b>Operational</b>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: Workspace -->
+    <div class="launch-panel">
+      <h2 style="margin:0; font-weight: 600;">AI Assistant Workspace</h2>
+      <p style="color: var(--text-muted); max-width: 420px; margin: 0;">
+        Your read-only Composio integrations are active and connected in the background.
+      </p>
+      
+      <button class="launch-btn" onclick="window.open('https://gemini.google.com', '_blank')">
+        🚀 Launch Gemini Session
+      </button>
+    </div>
+
+  </div>
+
+</body>
+</html>
