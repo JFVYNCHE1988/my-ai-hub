@@ -20,7 +20,6 @@
       overflow: hidden;
     }
 
-    /* Sidebar Styling */
     .sidebar {
       width: 300px;
       background-color: #242424;
@@ -89,7 +88,6 @@
       color: #d1d1d6;
     }
 
-    /* Main Workspace Styling */
     .main-content {
       flex: 1;
       display: flex;
@@ -129,7 +127,6 @@
       max-width: 420px;
     }
 
-    /* Launch Button */
     .btn-launch {
       background: linear-gradient(180deg, #ff6d00 0%, #e65100 100%);
       color: #ffffff;
@@ -155,7 +152,6 @@
 </head>
 <body>
 
-  <!-- Left Sidebar -->
   <div class="sidebar">
     <div>
       <div class="section-title">Live Connections</div>
@@ -180,29 +176,25 @@
     </div>
   </div>
 
-  <!-- Right Main Area -->
   <div class="main-content">
     <div class="header">ABUNDANCE & HEALTH AI COMMAND CENTER</div>
 
     <div class="workspace">
       <div class="workspace-title">AI ASSISTANT WORKSPACE</div>
-      <div class="workspace-desc">Your Composio Shopify integrations are active and ready in Claude Desktop.</div>
-      <button class="btn-launch" onclick="launchClaude()">🚀 Launch Claude Session</button>
+      <div class="workspace-desc">Your Composio Shopify integrations are active and connected in Claude Desktop.</div>
+      <button class="btn-launch" id="launchBtn" onclick="handleLaunch()">🚀 Launch Claude Session</button>
     </div>
   </div>
 
   <script>
-    function launchClaude() {
-      // Electron / Protocol handler trigger for local Claude Desktop app
+    function handleLaunch() {
       if (window.electronAPI && window.electronAPI.launchClaude) {
         window.electronAPI.launchClaude();
       } else {
-        // Fallback to registered local protocol scheme
         window.location.href = 'claude://';
       }
     }
   </script>
 </body>
 </html>
-
 
