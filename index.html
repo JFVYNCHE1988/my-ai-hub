@@ -6,199 +6,221 @@
   <title>Abundance & Health AI Command Center</title>
   <link rel="manifest" href="manifest.json">
   <style>
-    :root {
-      --brand-accent: #e65c00;
-      --bg-dark: #121212;
-      --panel-bg: #1e1e1e;
-      --status-green: #10b981;
-      --text-main: #f5f5f5;
-      --text-muted: #9ca3af;
-      --border-color: #2e2e2e;
-    }
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
     }
     header {
-      background-color: var(--panel-bg);
-      padding: 14px 24px;
-      border-bottom: 1px solid var(--border-color);
-    }
-    .logo-title {
-      font-weight: 700;
-      font-size: 1.1rem;
-      letter-spacing: 0.5px;
-      color: var(--brand-accent);
-    }
-    .app-layout {
+      background-color: #1e1e1e;
+      padding: 15px 20px;
+      border-bottom: 1px solid #333;
       display: flex;
-      flex: 1;
-      height: calc(100vh - 53px);
-    }
-    /* LEFT PANEL: Live Connections */
-    .status-panel {
-      width: 300px;
-      background-color: var(--panel-bg);
-      border-right: 1px solid var(--border-color);
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
+      align-items: center;
       justify-content: space-between;
     }
-    .panel-title {
-      font-size: 0.85rem;
-      text-transform: uppercase;
+    h1 {
+      font-size: 1.1rem;
+      color: #e65c00;
       letter-spacing: 1px;
-      color: var(--text-muted);
-      margin-bottom: 20px;
-      font-weight: 600;
+      text-transform: uppercase;
     }
-    .connection-list {
+    .container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    /* LEFT PANEL SPLIT */
+    .left-panel {
+      width: 320px;
+      background-color: #181818;
+      border-right: 1px solid #2a2a2a;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      padding: 20px;
+      gap: 20px;
+    }
+    .panel-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .panel-section-feed {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    h2 {
+      font-size: 0.75rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
     }
     .connection-item {
+      background-color: #222;
+      border-radius: 6px;
+      padding: 12px;
       display: flex;
       align-items: center;
       gap: 12px;
-      background-color: #262626;
-      padding: 12px 14px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
+      border: 1px solid #2c2c2c;
     }
     .status-dot {
       width: 10px;
       height: 10px;
+      background-color: #00e676;
       border-radius: 50%;
-      background-color: var(--status-green);
-      box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
-      flex-shrink: 0;
+      box-shadow: 0 0 8px rgba(0, 230, 118, 0.4);
     }
-    .connection-info {
+    .item-title { font-weight: 600; font-size: 0.9rem; color: #fff; }
+    .item-desc { font-size: 0.75rem; color: #888; }
+    
+    /* FEED CONTAINER */
+    .feed-container {
+      flex: 1;
+      background-color: #121212;
+      border: 1px solid #2c2c2c;
+      border-radius: 6px;
+      padding: 10px;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
+      gap: 8px;
     }
-    .connection-name { font-size: 0.9rem; font-weight: 600; }
-    .connection-sub { font-size: 0.75rem; color: var(--text-muted); }
-    
-    .panel-footer {
-      border-top: 1px solid var(--border-color);
-      padding-top: 15px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
+    .feed-item {
+      background-color: #1c1c1c;
+      border-left: 3px solid #e65c00;
+      padding: 8px 10px;
+      border-radius: 3px;
     }
+    .feed-time { font-size: 0.65rem; color: #777; margin-bottom: 3px; }
+    .feed-text { font-size: 0.8rem; color: #ddd; }
 
-    /* RIGHT PANEL: Launch Area */
-    .launch-panel {
+    .test-btn {
+      margin-top: 8px;
+      background-color: #2a2a2a;
+      color: #bbb;
+      border: 1px solid #3d3d3d;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .test-btn:hover { background-color: #383838; color: #fff; }
+
+    /* RIGHT PANEL */
+    .main-panel {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background-color: #161616;
-      gap: 20px;
-      padding: 40px;
+      background-color: #121212;
+      padding: 20px;
       text-align: center;
     }
     .launch-btn {
-      background-color: var(--brand-accent);
+      background-color: #e65c00;
       color: #fff;
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 14px 28px;
       border: none;
-      padding: 16px 36px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
+      box-shadow: 0 4px 12px rgba(230, 92, 0, 0.3);
+      transition: transform 0.1s;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 15px;
     }
-    .launch-btn:hover {
-      background-color: #ff6a00;
-      transform: translateY(-2px);
-    }
+    .launch-btn:hover { transform: translateY(-2px); }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="logo-title">ABUNDANCE & HEALTH <span>AI COMMAND CENTER</span></div>
+    <h1>Abundance & Health AI Command Center</h1>
   </header>
 
-  <div class="app-layout">
-    
-    <!-- LEFT PANEL: Live Connections -->
-    <div class="status-panel">
-      <div>
-        <div class="panel-title">Live Connections</div>
-        
-        <div class="connection-list">
-          <div class="connection-item">
-            <span class="status-dot"></span>
-            <div class="connection-info">
-              <span class="connection-name">Shopify UK</span>
-              <span class="connection-sub">Read-Only</span>
-            </div>
-          </div>
-
-          <div class="connection-item">
-            <span class="status-dot"></span>
-            <div class="connection-info">
-              <span class="connection-name">Shopify EU</span>
-              <span class="connection-sub">Read-Only</span>
-            </div>
-          </div>
-
-          <div class="connection-item">
-            <span class="status-dot"></span>
-            <div class="connection-info">
-              <span class="connection-name">James & James 3PL</span>
-              <span class="connection-sub">UK & EU Warehouses</span>
-            </div>
-          </div>
-
-          <div class="connection-item">
-            <span class="status-dot"></span>
-            <div class="connection-info">
-              <span class="connection-name">Recharge Subscriptions</span>
-              <span class="connection-sub">Active Subscriptions</span>
-            </div>
-          </div>
-
-          <div class="connection-item">
-            <span class="status-dot"></span>
-            <div class="connection-info">
-              <span class="connection-name">Gmail Support</span>
-              <span class="connection-sub">Support Inbox</span>
-            </div>
+  <div class="container">
+    <!-- LEFT PANEL: CONNECTION & LIVE FEED -->
+    <div class="left-panel">
+      
+      <!-- 1 ACTIVE CONNECTION -->
+      <div class="panel-section">
+        <h2>Live Connections</h2>
+        <div class="connection-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="item-title">Shopify UK</div>
+            <div class="item-desc">Connected • Read-Only</div>
           </div>
         </div>
       </div>
 
-      <div class="panel-footer">
-        Composio MCP Gateway: <b>Operational</b>
+      <!-- LIVE FEED SECTION -->
+      <div class="panel-section-feed">
+        <h2>Live Activity Feed</h2>
+        <div class="feed-container" id="feedContainer">
+          <div class="feed-item">
+            <div class="feed-time">Just now</div>
+            <div class="feed-text">Shopify UK webhook listener initialized.</div>
+          </div>
+          <div class="feed-item">
+            <div class="feed-time">2 mins ago</div>
+            <div class="feed-text">Order #1042 sync verified with J&J.</div>
+          </div>
+        </div>
+        <button class="test-btn" onclick="addTestAlert()">+ Add Test Alert</button>
       </div>
+
     </div>
 
-    <!-- RIGHT PANEL: Workspace -->
-    <div class="launch-panel">
-      <h2 style="margin:0; font-weight: 600;">AI Assistant Workspace</h2>
-      <p style="color: var(--text-muted); max-width: 420px; margin: 0;">
+    <!-- MAIN RIGHT PANEL -->
+    <div class="main-panel">
+      <h2>AI Assistant Workspace</h2>
+      <p style="color: #888; font-size: 0.9rem; margin-top: 8px;">
         Your read-only Composio integrations are active and connected in the background.
       </p>
-      
-      <button class="launch-btn" onclick="window.open('https://gemini.google.com', '_blank')">
-        🚀 Launch Gemini Session
-      </button>
+      <a href="https://gemini.google.com" target="_blank" class="launch-btn">🚀 Launch Gemini Session</a>
     </div>
-
   </div>
+
+  <script>
+    function addTestAlert() {
+      const container = document.getElementById('feedContainer');
+      const newItem = document.createElement('div');
+      newItem.className = 'feed-item';
+      
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      const sampleEvents = [
+        "Shopify UK: New order #1045 placed.",
+        "Altrient C stock level alert on EU warehouse.",
+        "Recharge: Subscription update processed.",
+        "Gmail: Support email received from VIP client."
+      ];
+      const randomEvent = sampleEvents[Math.floor(Math.random() * sampleEvents.length)];
+
+      newItem.innerHTML = `
+        <div class="feed-time">${timeStr}</div>
+        <div class="feed-text">${randomEvent}</div>
+      `;
+      
+      container.prepend(newItem);
+    }
+  </script>
 
 </body>
 </html>
+
+
