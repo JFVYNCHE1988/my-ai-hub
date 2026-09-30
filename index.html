@@ -245,7 +245,7 @@
       color: #fff;
     }
 
-    /* Compact Product Vertical Slider List */
+    /* Compact Product Scrollable List */
     .stock-list-container {
       position: relative;
     }
@@ -254,7 +254,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-height: 380px;
+      max-height: 480px;
       overflow-y: auto;
       padding-right: 4px;
     }
@@ -272,7 +272,7 @@
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--border-color);
       border-radius: 6px;
-      padding: 10px 12px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -311,108 +311,47 @@
       color: var(--red-alert);
     }
 
-    /* Right Main Area */
+    /* Right Main Area: Claude Launcher */
     .main-content {
       display: flex;
       flex-direction: column;
       gap: 16px;
     }
 
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .metric-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 14px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .metric-card:hover {
-      border-color: var(--orange-main);
-      background: rgba(255, 107, 0, 0.04);
-      transform: translateY(-2px);
-    }
-
-    .metric-value {
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: #fff;
-      margin-top: 4px;
-    }
-
-    .metric-label {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    /* Live Feed */
-    .feed-container {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-
-    .feed-item {
-      padding: 8px 10px;
-      border-left: 3px solid var(--orange-main);
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 0 4px 4px 0;
-      font-size: 0.78rem;
-    }
-
-    .feed-item.recharge {
-      border-left-color: var(--blue-accent);
-    }
-
-    .feed-time {
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      margin-bottom: 2px;
-    }
-
-    /* Claude Launch Banner */
     .launch-panel {
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 10px;
-      padding: 24px;
+      padding: 40px 24px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      gap: 14px;
+      gap: 16px;
       flex: 1;
+      min-height: 450px;
     }
 
     .launch-icon {
-      width: 56px;
-      height: 56px;
+      width: 72px;
+      height: 72px;
       background: rgba(255, 107, 0, 0.1);
       border: 1px solid var(--orange-main);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.4rem;
+      font-size: 1.8rem;
       color: var(--orange-main);
-      box-shadow: 0 0 18px var(--orange-glow);
+      box-shadow: 0 0 24px var(--orange-glow);
     }
 
     .launch-btn {
       width: 100%;
-      max-width: 260px;
-      padding: 10px 18px;
-      font-size: 0.9rem;
+      max-width: 280px;
+      padding: 12px 20px;
+      font-size: 0.95rem;
       font-weight: 700;
       border-radius: 6px;
       cursor: pointer;
@@ -422,7 +361,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       transition: all 0.25s ease;
       box-shadow: 0 4px 15px var(--orange-glow);
       text-decoration: none;
@@ -431,57 +370,6 @@
     .launch-btn:hover {
       background: var(--orange-light);
       transform: translateY(-2px);
-    }
-
-    /* Modal */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(10, 12, 18, 0.8);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal-content {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      width: 90%;
-      max-width: 700px;
-      padding: 20px;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.82rem;
-    }
-
-    .data-table th, .data-table td {
-      padding: 8px 10px;
-      text-align: left;
-      border-bottom: 1px solid var(--border-color);
     }
   </style>
 </head>
@@ -542,7 +430,7 @@
     
     <!-- LEFT SIDEBAR: Regional Stock Panel -->
     <aside class="sidebar">
-      <section class="card">
+      <section class="card" style="height: 100%;">
         <div class="card-title">
           <span>Live Stock Panel</span>
           <i class="fa-solid fa-boxes-stacked"></i>
@@ -574,7 +462,7 @@
               <div class="prod-details">
                 <span class="prod-sku">ALT-B-1000</span>
                 <span class="prod-title">Altrient B Complex</span>
-                </div>
+              </div>
               <span class="prod-units">1,100 units</span>
             </div>
             <div class="product-row-card">
@@ -645,83 +533,20 @@
 
     <!-- RIGHT MAIN CONTENT PANEL -->
     <main class="main-content">
-      
-      <!-- Metrics Summary -->
-      <section class="card">
-        <div class="card-title">
-          <span>Subscription & Operational Metrics</span>
-          <i class="fa-solid fa-chart-simple"></i>
-        </div>
-        <div class="metrics-grid">
-          <div class="metric-card" id="rechargeCard">
-            <div class="metric-label">Active Recharge Subscriptions</div>
-            <div class="metric-value" style="color: var(--blue-accent);">1,842</div>
-            <div style="font-size:0.7rem; color:var(--blue-accent); margin-top:4px;">Across both stores</div>
-          </div>
-          <div class="metric-card" id="ordersCard">
-            <div class="metric-label">Pending Orders (&gt;24h)</div>
-            <div class="metric-value" style="color: var(--red-alert);">18</div>
-            <div style="font-size:0.7rem; color:var(--red-alert); margin-top:4px;">Requires attention</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Live Activity Feed -->
-      <section class="card">
-        <div class="card-title">
-          <span>Live Activity Feed</span>
-          <i class="fa-solid fa-bolt"></i>
-        </div>
-        <div class="feed-container">
-          <div class="feed-item recharge">
-            <div class="feed-time">1 min ago • Recharge Read-Only</div>
-            <div class="feed-text">Synced 1,842 active subscription contracts.</div>
-          </div>
-          <div class="feed-item">
-            <div class="feed-time">12 mins ago • Stock Alert</div>
-            <div class="feed-text">UK Warehouse <b>NT-MAG-60</b> low stock alert (35 units remaining).</div>
-          </div>
-          <div class="feed-item">
-            <div class="feed-time">24 mins ago • Neutrient</div>
-            <div class="feed-text">Order #NT-4892 flagged for address review (&gt;24h pending).</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Agent Launcher -->
       <section class="launch-panel">
         <div class="launch-icon">
           <i class="fa-solid fa-robot"></i>
         </div>
         <h2>Claude AI Integration Hub</h2>
-        <p style="color: var(--text-muted); max-width: 480px; font-size: 0.88rem;">
+        <p style="color: var(--text-muted); max-width: 480px; font-size: 0.9rem;">
           Cross-examine Recharge subscription renewal demand against live stock levels across UK and EU warehouses.
         </p>
         <a href="#" id="launchClaudeBtn" class="launch-btn">
           <i class="fa-solid fa-paper-plane"></i> Launch Claude Session
         </a>
       </section>
-
     </main>
-  </div>
 
-  <!-- Recharge Modal -->
-  <div class="modal-overlay" id="rechargeModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3><i class="fa-solid fa-arrows-rotate" style="color: var(--blue-accent);"></i> Active Recharge Subscriptions</h3>
-        <button class="btn" onclick="document.getElementById('rechargeModal').classList.remove('active')">Close</button>
-      </div>
-      <table class="data-table">
-        <thead>
-          <tr><th>Store</th><th>Subscriptions</th><th>Next Renewal Window</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Abundance &amp; Health</td><td>1,210</td><td>Next 7 Days</td></tr>
-          <tr><td>Neutrient</td><td>632</td><td>Next 7 Days</td></tr>
-        </tbody>
-      </table>
-    </div>
   </div>
 
   <script>
@@ -755,11 +580,6 @@
       } else {
         window.open("https://claude.ai", "_blank");
       }
-    });
-
-    // Modal
-    document.getElementById('rechargeCard').addEventListener('click', () => {
-      document.getElementById('rechargeModal').classList.add('active');
     });
 
     // Copy Code Button
