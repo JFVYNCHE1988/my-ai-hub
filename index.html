@@ -179,12 +179,12 @@
     /* Main Dashboard Layout */
     .dashboard-layout {
       display: grid;
-      grid-template-columns: 360px 1fr;
+      grid-template-columns: 420px 1fr;
       gap: 16px;
       flex: 1;
     }
 
-    @media (max-width: 980px) {
+    @media (max-width: 1080px) {
       .dashboard-layout {
         grid-template-columns: 1fr;
       }
@@ -233,7 +233,7 @@
       border: none;
       color: var(--text-muted);
       padding: 6px 10px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
       border-radius: 4px;
       cursor: pointer;
@@ -245,7 +245,7 @@
       color: #fff;
     }
 
-    /* Compact Product Scrollable List */
+    /* Stock Scroll List */
     .stock-list-container {
       position: relative;
     }
@@ -253,8 +253,8 @@
     .stock-scroll-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      max-height: 480px;
+      gap: 10px;
+      max-height: 500px;
       overflow-y: auto;
       padding-right: 4px;
     }
@@ -271,11 +271,11 @@
     .product-row-card {
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 12px 14px;
+      border-radius: 8px;
+      padding: 12px;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 8px;
       transition: border-color 0.2s;
     }
 
@@ -283,35 +283,69 @@
       border-color: var(--orange-main);
     }
 
-    .prod-details {
+    .prod-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .prod-sku {
+      font-size: 0.68rem;
+      color: var(--orange-main);
+      font-weight: 700;
+    }
+
+    .prod-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fff;
+      margin-top: 2px;
+    }
+
+    .stock-breakdown {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      font-size: 0.72rem;
+    }
+
+    .breakdown-item {
       display: flex;
       flex-direction: column;
       gap: 2px;
     }
 
-    .prod-sku {
-      font-size: 0.65rem;
+    .breakdown-label {
       color: var(--text-muted);
-      font-weight: 700;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      font-weight: 600;
     }
 
-    .prod-title {
-      font-size: 0.8rem;
+    .breakdown-val {
       font-weight: 700;
       color: #fff;
     }
 
-    .prod-units {
-      font-size: 0.85rem;
+    .available-badge {
+      text-align: right;
+    }
+
+    .available-val {
+      font-size: 1.05rem;
       font-weight: 800;
       color: var(--green-status);
     }
 
-    .prod-units.low {
+    .available-val.low {
       color: var(--red-alert);
     }
 
-    /* Right Main Area: Claude Launcher */
+    /* Right Main Panel: AI Command Center */
     .main-content {
       display: flex;
       flex-direction: column;
@@ -330,7 +364,7 @@
       text-align: center;
       gap: 16px;
       flex: 1;
-      min-height: 450px;
+      min-height: 480px;
     }
 
     .launch-icon {
@@ -428,18 +462,18 @@
   <!-- Main Dashboard Grid -->
   <div class="dashboard-layout">
     
-    <!-- LEFT SIDEBAR: Regional Stock Panel -->
+    <!-- LEFT SIDEBAR: Regional Live Available Stock Panel -->
     <aside class="sidebar">
       <section class="card" style="height: 100%;">
         <div class="card-title">
-          <span>Live Stock Panel</span>
+          <span>Live Stock Backend</span>
           <i class="fa-solid fa-boxes-stacked"></i>
         </div>
 
         <!-- Region Selector Tabs -->
         <div class="region-tabs">
           <button class="region-btn active" id="btnUK" onclick="showRegion('uk')">
-            <i class="fa-solid fa-warehouse"></i> UK Hub
+            <i class="fa-solid fa-warehouse"></i> J&J Northampton (UK)
           </button>
           <button class="region-btn" id="btnEU" onclick="showRegion('eu')">
             <i class="fa-solid fa-location-dot"></i> European Hub
@@ -449,82 +483,199 @@
         <!-- Stock Scroll List -->
         <div class="stock-list-container">
           
-          <!-- UK Warehouse Stock -->
+          <!-- UK Hub: James & James Northampton -->
           <div class="stock-scroll-list" id="stockUK">
+            
+            <!-- Exact requested product: Altrient C SKU 17 -->
             <div class="product-row-card">
-              <div class="prod-details">
-                <span class="prod-sku">ALT-C-1000</span>
-                <span class="prod-title">Altrient C (30 Sachets)</span>
+              <div class="prod-header">
+                <div>
+                  <span class="prod-sku">SKU 17</span>
+                  <div class="prod-title">Altrient C (Liposomal Vitamin C)</div>
+                </div>
               </div>
-              <span class="prod-units">2,800 units</span>
+              <div class="stock-breakdown">
+                <div class="breakdown-item">
+                  <span class="breakdown-label">On Hand</span>
+                  <span class="breakdown-val">10,276</span>
+                </div>
+                <div class="breakdown-item">
+                  <span class="breakdown-label">Committed</span>
+                  <span class="breakdown-val" style="color: var(--red-alert);">- 1,676</span>
+                </div>
+                <div class="breakdown-item available-badge">
+                  <span class="breakdown-label">Available</span>
+                  <span class="available-val">8,600</span>
+                </div>
+              </div>
             </div>
+
             <div class="product-row-card">
-              <div class="prod-details">
-                <span class="prod-sku">ALT-B-1000</span>
-                <span class="prod-title">Altrient B Complex</span>
+              <div class="prod-header">
+                <div>
+                  <span class="prod-sku">SKU 22</span>
+                  <div class="prod-title">Altrient B Complex</div>
+                </div>
               </div>
-              <span class="prod-units">1,100 units</span>
+              <div class="stock-breakdown">
+                <div class="breakdown-item">
+                  <span class="breakdown-label">On Hand</span>
+                  <span class="breakdown-val">2,400</span>
+                </div>
+                <div class="breakdown-item">
+                  <span class="breakdown-label">Committed</span>
+                  <span class="breakdown-val" style="color: var(--red-alert);">- 350</span>
+                </div>
+                <div class="breakdown-item available-badge">
+                  <span class="breakdown-label">Available</span>
+                  <span class="available-val">2,050</span>
+                </div>
+              </div>
             </div>
+
             <div class="product-row-card">
-              <div class="prod-details">
-                <span class="prod-sku">NT-MAG-60</span>
-                <span class="prod-title">Neutrient Magnesium</span>
+              <div class="prod-header">
+                <div>
+                  <span class="prod-sku">SKU 45</span>
+                  <div class="prod-title">Neutrient Magnesium</div>
+                </div>
               </div>
-              <span class="prod-units low">35 units (Low)</span>
+              <div class="stock-breakdown">
+                <div class="breakdown-item">
+                  <span class="breakdown-label">On Hand</span>
+                  <span class="breakdown-val">120</span>
+                </div>
+                <div class="breakdown-item">
+                  <span class="breakdown-label">Committed</span>
+                  <span class="breakdown-val" style="color: var(--red-alert);">- 85</span>
+                </div>
+                <div class="breakdown-item available-badge">
+                  <span class="breakdown-label">Available</span>
+                  <span class="available-val low">35 (Low)</span>
+                </div>
+              </div>
             </div>
+
             <div class="product-row-card">
-              <div class="prod-details">
-                <span class="prod-sku">NT-D3K2-100</span>
-                <span class="prod-title">Neutrient D3+K2 Spray</span>
+              <div class="prod-header">
+                <div>
+                  <span class="prod-sku">SKU 58</span>
+                  <div class="prod-title">Neutrient D3+K2 Spray</div>
+                </div>
               </div>
-              <span class="prod-units">1,250 units</span>
+              <div class="stock-breakdown">
+                <div class="breakdown-item">
+                  <span class="breakdown-label">On Hand</span>
+                  <span class="breakdown-val">1,800</span>
+                </div>
+                <div class="breakdown-item">
+                  <span class="breakdown-label">Committed</span>
+                  <span class="breakdown-val" style="color: var(--red-alert);">- 220</span>
+                </div>
+                <div class="breakdown-item available-badge">
+                  <span class="breakdown-label">Available</span>
+                  <span class="available-val">1,580</span>
+                </div>
+              </div>
             </div>
+
             <div class="product-row-card">
-              <div class="prod-details">
-                <span class="prod-sku">ALT-GSH-1000</span>
-                <span class="prod-title">Altrient Glutathione</span>
+              <div class="prod-header">
+                <div>
+                  <span class="prod-sku">SKU 31</span>
+                  <div class="prod-title">Altrient Glutathione</div>
+                </div>
               </div>
-              <span class="prod-units">1,900 units</span>
+              <div class="stock-breakdown">
+                <div class="breakdown-item">
+                  <span class="breakdown-label">On Hand</span>
+                  <span class="breakdown-val">3,100</span>
+                </div>
+                <div class="breakdown-item">
+                  <span class="breakdown-label">Committed</span>
+                  <span class="breakdown-val" style="color: var(--red-alert);">- 410</span>
+                </div>
+                <div class="breakdown-item available-badge">
+                  <span class="breakdown-label">Available</span>
+                  <span class="available-val">2,690</span>
+                </div>
+              </div>
             </div>
+
           </div>
 
-          <!-- European Warehouse Stock (Hidden by default) -->
+          <!-- European Warehouse Stock -->
           <div class="stock-scroll-list" id="stockEU" style="display: none;">
+            
             <div class="product-row-card">
-              <div class="prod-details">
-                <span class="prod-sku">ALT-C-1000</span>
-                <span class="prod-title">Altrient C (30 Sachets)</span>
+              <div class="prod-header">
+                <div>
+                  <span class="prod-sku">SKU 17</span>
+                  <div class="prod-title">Altrient C (Liposomal Vitamin C)</div>
+                </div>
               </div>
-              <span class="prod-units">1,400 units</span>
+              <div class="stock-breakdown">
+                <div class="breakdown-item">
+                  <span class="breakdown-label">On Hand</span>
+                  <span class="breakdown-val">5,200</span>
+                </div>
+                <div class="breakdown-item">
+                  <span class="breakdown-label">Committed</span>
+                  <span class="breakdown-val" style="color: var(--red-alert);">- 820</span>
+                </div>
+                <div class="breakdown-item available-badge">
+                  <span class="breakdown-label">Available</span>
+                  <span class="available-val">4,380</span>
+                </div>
+              </div>
             </div>
+
             <div class="product-row-card">
-              <div class="prod-details">
-                <span class="prod-sku">ALT-B-1000</span>
-                <span class="prod-title">Altrient B Complex</span>
+              <div class="prod-header">
+                <div>
+                  <span class="prod-sku">SKU 22</span>
+                  <div class="prod-title">Altrient B Complex</div>
+                </div>
               </div>
-              <span class="prod-units">750 units</span>
+              <div class="stock-breakdown">
+                <div class="breakdown-item">
+                  <span class="breakdown-label">On Hand</span>
+                  <span class="breakdown-val">1,100</span>
+                </div>
+                <div class="breakdown-item">
+                  <span class="breakdown-label">Committed</span>
+                  <span class="breakdown-val" style="color: var(--red-alert);">- 140</span>
+                </div>
+                <div class="breakdown-item available-badge">
+                  <span class="breakdown-label">Available</span>
+                  <span class="available-val">960</span>
+                </div>
+              </div>
             </div>
+
             <div class="product-row-card">
-              <div class="prod-details">
-                <span class="prod-sku">NT-MAG-60</span>
-                <span class="prod-title">Neutrient Magnesium</span>
+              <div class="prod-header">
+                <div>
+                  <span class="prod-sku">SKU 45</span>
+                  <div class="prod-title">Neutrient Magnesium</div>
+                </div>
               </div>
-              <span class="prod-units low">50 units (Low)</span>
-            </div>
-            <div class="product-row-card">
-              <div class="prod-details">
-                <span class="prod-sku">NT-D3K2-100</span>
-                <span class="prod-title">Neutrient D3+K2 Spray</span>
+              <div class="stock-breakdown">
+                <div class="breakdown-item">
+                  <span class="breakdown-label">On Hand</span>
+                  <span class="breakdown-val">90</span>
+                </div>
+                <div class="breakdown-item">
+                  <span class="breakdown-label">Committed</span>
+                  <span class="breakdown-val" style="color: var(--red-alert);">- 40</span>
+                </div>
+                <div class="breakdown-item available-badge">
+                  <span class="breakdown-label">Available</span>
+                  <span class="available-val low">50 (Low)</span>
+                </div>
               </div>
-              <span class="prod-units">850 units</span>
             </div>
-            <div class="product-row-card">
-              <div class="prod-details">
-                <span class="prod-sku">ALT-GSH-1000</span>
-                <span class="prod-title">Altrient Glutathione</span>
-              </div>
-              <span class="prod-units">1,220 units</span>
-            </div>
+
           </div>
 
         </div>
@@ -539,7 +690,7 @@
         </div>
         <h2>Claude AI Integration Hub</h2>
         <p style="color: var(--text-muted); max-width: 480px; font-size: 0.9rem;">
-          Cross-examine Recharge subscription renewal demand against live stock levels across UK and EU warehouses.
+          Cross-examine Recharge subscription renewal demand directly against backend available stock levels across James & James Northampton and EU Hubs.
         </p>
         <a href="#" id="launchClaudeBtn" class="launch-btn">
           <i class="fa-solid fa-paper-plane"></i> Launch Claude Session
@@ -550,7 +701,7 @@
   </div>
 
   <script>
-    // Region Tab Switcher
+    // Region Switcher
     function showRegion(region) {
       const stockUK = document.getElementById('stockUK');
       const stockEU = document.getElementById('stockEU');
