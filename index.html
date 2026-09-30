@@ -1,197 +1,1856 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Abundance & Health AI Command Center</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+<html lang="en"><head><script data-bard-client-injected="true">(function(firebaseConfig, initialAuthToken, appId) {
+        window.__firebase_config = firebaseConfig;
+        window.__initial_auth_token = initialAuthToken;
+        window.__app_id = appId;
+            })("\n{\n  \"apiKey\": \"AIzaSyCqyCcs2R2e7AegGjvFAwG98wlamtbHvZY\",\n  \"authDomain\": \"bard-frontend.firebaseapp.com\",\n  \"projectId\": \"bard-frontend\",\n  \"storageBucket\": \"bard-frontend.firebasestorage.app\",\n  \"messagingSenderId\": \"175205271074\",\n  \"appId\": \"1:175205271074:web:2b7bd4d34d33bf38e6ec7b\"\n}\n","eyJhbGciOiJSUzI1NiIsImtpZCI6IjExNjRiNzdiNDMzZDdhMDAyMWI4NjE4YjhjYTU3ZTMyZGI5MWUxMTMiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BiYXJkLWZyb250ZW5kLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiYXVkIjoiaHR0cHM6Ly9pZGVudGl0eXRvb2xraXQuZ29vZ2xlYXBpcy5jb20vZ29vZ2xlLmlkZW50aXR5LmlkZW50aXR5dG9vbGtpdC52MS5JZGVudGl0eVRvb2xraXQiLCJ1aWQiOiIxODIyOTYyOTEwMzAzNTQxMzUxNSIsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLWZic3ZjQGJhcmQtZnJvbnRlbmQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJjbGFpbXMiOnsiYXBwSWQiOiJjX2NmOWZlMjY2NDBhYWQ5NzdfaW5kZXguaHRtbC0xMzUifSwiZXhwIjoxNzkwNzc1MjQ2LCJpYXQiOjE3OTA3NzE2NDYsImFsZyI6IlJTMjU2In0.DLFU3pJL_sGndElbp0v-qjmS16hktB5-Jpf6dUbN68rU4Y-sKJo6Wv4yBGmidOOQaskfQiSp90sCGUz-sK51Ezd6geGq8LYNGqxdR_P5bNUSt3_OkwFQODZz6FS7opD0y0R8S-hAyjUT6fsjc81v5dunFSIcrM9MWP9HcpitDb3OuGcCuA7qnW3Y9rzmf1TM3VmLuHbWKOByBObtkdlQiAijNU86k8wwwf8nVg9uXqbBi5vjlASFbtFvaiNCjtFjywOCZRUcVAeDoLOTH9WCi5NE9_eliUZ6ONcncXdp3lLrqlA0q5KAAjxHGf4v6H4IQSH2CF2e4HtqwHMSqwwxLQ","c_cf9fe26640aad977_index.html-135")</script><script data-bard-client-injected="true">
+  document.addEventListener('input', (event) => {
+    if (event.target && (event.target.isContentEditable || event.target.hasAttribute('contenteditable'))) {
+      const clonedDoc = document.cloneNode(true);
+      const injectedScripts = clonedDoc.querySelectorAll('[data-bard-client-injected="true"]');
+      injectedScripts.forEach(el => el.remove());
+      window.parent.postMessage({
+        type: 'inlineEdit',
+        html: '<!DOCTYPE html>\n' + clonedDoc.documentElement.outerHTML
+      }, '*');
+    }
+  });
+</script><script data-bard-client-injected="true">(function(){'use strict';window.addEventListener("message",a=>{a.data&&a.data.type==="SUPPLEMENTAL_DATA_UPDATE"&&window.dispatchEvent(new CustomEvent("supplementaldataupdate",{detail:a.data.data}))});}).call(this);
+</script><script data-bard-client-injected="true">(function() {
+  const SCROLL_KEYS = new Set([
+    'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
+    ' ', 'Spacebar', 'PageUp', 'PageDown', 'Home', 'End',
+  ]);
+  const HORIZONTAL_KEYS = new Set(['ArrowLeft', 'ArrowRight']);
+
+  function isTextEntryTarget(target) {
+    if (!target) return false;
+    const tagName = target.tagName;
+    return tagName === 'INPUT' || tagName === 'TEXTAREA' ||
+        tagName === 'SELECT' || target.isContentEditable === true;
+  }
+
+  // An element absorbs the key only if it both overflows on the axis being
+  // scrolled and is configured to scroll on that axis. The cheap dimension
+  // test runs first because getComputedStyle forces a style recalc, and this
+  // runs on every keypress. Each axis is read from its own longhand: the
+  // 'overflow' shorthand serializes as two values when the axes differ, which
+  // is the common 'overflow-x: hidden; overflow-y: auto' pane.
+  function canScroll(node, horizontal) {
+    const overflows = horizontal ? node.scrollWidth > node.clientWidth
+                                 : node.scrollHeight > node.clientHeight;
+    if (!overflows) return false;
+    const style = window.getComputedStyle(node);
+    const overflow = horizontal ? style.overflowX : style.overflowY;
+    return overflow === 'auto' || overflow === 'scroll';
+  }
+
+  // Walks up from the event target so nested scrollers keep their behavior.
+  // <body> is included because pages that pin the root height make it the
+  // scroll container.
+  function hasScrollableAncestor(target, horizontal) {
+    let node = target;
+    while (node && node !== document.documentElement) {
+      if (canScroll(node, horizontal)) return true;
+      node = node.parentElement;
+    }
+    return false;
+  }
+
+  function rootCanScroll(horizontal) {
+    const scroller = document.scrollingElement || document.documentElement;
+    if (!scroller) return false;
+    // Tolerate a pixel of rounding so subpixel layouts do not look scrollable.
+    return horizontal ? scroller.scrollWidth > window.innerWidth + 1
+                      : scroller.scrollHeight > window.innerHeight + 1;
+  }
+
+  window.addEventListener('keydown', function(event) {
+    if (!SCROLL_KEYS.has(event.key)) return;
+    if (event.defaultPrevented) return;
+    // Alt and Meta turn arrows into browser history navigation, and Ctrl is
+    // reserved for shortcuts, so none of them are scroll intent.
+    if (event.altKey || event.metaKey || event.ctrlKey) return;
+
+    const target = event.target;
+    if (isTextEntryTarget(target)) return;
+
+    // Anything that can still absorb the scroll gets to keep it.
+    const horizontal = HORIZONTAL_KEYS.has(event.key);
+    if (rootCanScroll(horizontal)) return;
+    if (hasScrollableAncestor(target, horizontal)) return;
+
+    event.preventDefault();
+  }, {capture: true, passive: false});
+})();</script><script data-bard-client-injected="true">(function() {
+  // Ensure this script is executed only once
+  if (window.firebaseAuthBridgeScriptLoaded) {
+    return;
+  }
+  window.firebaseAuthBridgeScriptLoaded = true;
+
+  let nextTokenPromiseId = 0;
+
+  // Stores { resolve, reject } for ongoing token requests
+  const pendingTokenPromises = {};
+
+  // Listen for messages from the Host Application
+  window.addEventListener('message', function(event) {
+
+    const messageData = event.data;
+
+  if (messageData && messageData.type === 'RESOLVE_NEW_FIREBASE_TOKEN') {
+      const { success, token, error, promiseId } = messageData ?? {};
+      if (pendingTokenPromises[promiseId]) {
+        if (success) {
+          pendingTokenPromises[promiseId].resolve(token);
+        } else {
+          pendingTokenPromises[promiseId].reject(new Error(error || 'Token refresh failed from host.'));
+        }
+        delete pendingTokenPromises[promiseId];
+      }
+    }
+  });
+
+  // Expose a function for the Generated App to request a new Firebase token
+  window.requestNewFirebaseToken = function() {
+    const currentPromiseId = nextTokenPromiseId++;
+    const promise = new Promise((resolve, reject) => {
+      pendingTokenPromises[currentPromiseId] = { resolve, reject };
+    });
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({
+        type: 'REQUEST_NEW_FIREBASE_TOKEN',
+        promiseId: currentPromiseId
+      }, '*');
+    } else {
+      pendingTokenPromises[currentPromiseId].reject(new Error('No parent window to request token from.'));
+      delete pendingTokenPromises[currentPromiseId];
+    }
+    return promise;
+  };
+})();</script><script data-bard-client-injected="true">
+let realOriginalGetUserMedia = null;
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  realOriginalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+}
+
+(function() {
+  if (navigator.mediaDevices && navigator.mediaDevices.__proto__) {
+    try {
+      Object.defineProperty(navigator.mediaDevices.__proto__, 'getUserMedia', {
+        get: function() {
+          return undefined; // Or throw an error
+        },
+        configurable: false
+      });
+    } catch (error) {
+      console.error("Error defining prototype getter:", error);
+    }
+  }
+})();
+
+(function() {
+  const pendingMediaResolvers = {};
+  let nextMediaPromiseId = 0;
+
+  function requestMediaPermissions(constraints) {
+    const mediaPromiseId = nextMediaPromiseId++;
+    const promise = new Promise((resolve, reject) => {
+      pendingMediaResolvers[mediaPromiseId] = (granted) => {
+        delete pendingMediaResolvers[mediaPromiseId];
+        resolve(granted);
+      };
+    });
+
+    window.parent.postMessage({
+      type: 'requestMediaPermission',
+      constraints: constraints,
+      promiseId: mediaPromiseId,
+    }, '*');
+
+    return promise;
+  }
+
+  let originalGetUserMedia = realOriginalGetUserMedia;
+
+  function interceptGetUserMedia() {
+    if (navigator.mediaDevices) {
+      Object.defineProperty(navigator.mediaDevices, 'getUserMedia', {
+        value: function(constraints) {
+          return requestMediaPermissions(constraints).then((granted) => {
+            if (granted) {
+              if (originalGetUserMedia) {
+                return originalGetUserMedia(constraints);
+              } else {
+                throw new Error("Original getUserMedia not available.");
+              }
+            } else {
+              throw new DOMException('Permission denied', 'NotAllowedError');
+            }
+          });
+        },
+        writable: false,
+        configurable: false
+      });
+    }
+  }
+
+  interceptGetUserMedia();
+
+  const observer = new MutationObserver(function(mutationsList, observer) {
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'reconfigured' && mutation.name === 'getUserMedia' && mutation.object === navigator.mediaDevices) {
+        interceptGetUserMedia();
+      } else if (mutation.type === 'attributes' && mutation.attributeName === 'getUserMedia' && mutation.target === navigator.mediaDevices) {
+        interceptGetUserMedia();
+      } else if (mutation.type === 'childList' && mutation.addedNodes) {
+        mutation.addedNodes.forEach(node => {
+          if (node === navigator.mediaDevices) {
+            interceptGetUserMedia();
+          }
+        });
+      }
+    }
+  });
+
+  function interceptSpeechRecognition() {
+    if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
+      return;
     }
 
-    body {
-      background-color: #1a1a1a;
-      color: #ffffff;
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
+    const OriginalSpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    const SpeechRecognitionWrapper = function(...args) {
+      const recognizer = new OriginalSpeechRecognition(...args);
+      const originalStart = recognizer.start.bind(recognizer);
+
+      recognizer.start = function() {
+        requestMediaPermissions({ audio: true }).then(granted => {
+          if (granted) {
+            originalStart();
+          } else {
+            const errorEvent = new SpeechRecognitionErrorEvent('error');
+            errorEvent.error = 'not-allowed'; // This is the standard error for permission denial.
+            recognizer.dispatchEvent(errorEvent);
+          }
+        });
+      };
+
+      return recognizer;
+    };
+
+    SpeechRecognitionWrapper.prototype = OriginalSpeechRecognition.prototype;
+    SpeechRecognitionWrapper.prototype.constructor = SpeechRecognitionWrapper;
+
+    if (window.SpeechRecognition) {
+      window.SpeechRecognition = SpeechRecognitionWrapper;
+    }
+    if (window.webkitSpeechRecognition) {
+      window.webkitSpeechRecognition = SpeechRecognitionWrapper;
+    }
+  }
+
+  interceptSpeechRecognition();
+
+  window.addEventListener('message', function(event) {
+    if (event.data) {
+      if (event.data.type === 'resolveMediaPermission') {
+        const { promiseId, granted } = event.data;
+        if (pendingMediaResolvers[promiseId]) {
+          pendingMediaResolvers[promiseId](granted);
+        }
+      }
+    }
+  });
+
+})();</script><script ws-interception-config="{&quot;parentOrigin&quot;:&quot;https://gemini.google.com&quot;,&quot;proxiedDomains&quot;:[]}" data-bard-client-injected="true">(function(){'use strict';var u=typeof Object.defineProperties=="function"?Object.defineProperty:function(b,d,e){if(b==Array.prototype||b==Object.prototype)return b;b[d]=e.value;return b};function v(b){b=["object"==typeof globalThis&&globalThis,b,"object"==typeof window&&window,"object"==typeof self&&self,"object"==typeof global&&global];for(var d=0;d<b.length;++d){var e=b[d];if(e&&e.Math==Math)return e}throw Error("Cannot find global object");}var w=v(this);
+function y(b,d){if(d)a:{var e=w;b=b.split(".");for(var h=0;h<b.length-1;h++){var k=b[h];if(!(k in e))break a;e=e[k]}b=b[b.length-1];h=e[b];d=d(h);d!=h&&d!=null&&u(e,b,{configurable:!0,writable:!0,value:d})}}function z(b){function d(h){return b.next(h)}function e(h){return b.throw(h)}return new Promise(function(h,k){function m(n){n.done?h(n.value):Promise.resolve(n.value).then(d,e).then(m,k)}m(b.next())})}y("globalThis",function(b){return b||w});/*
+
+ Copyright The Closure Library Authors.
+ SPDX-License-Identifier: Apache-2.0
+*/
+function A(b,d){function e(){}e.prototype=d.prototype;b.j=d.prototype;b.prototype=new e;b.prototype.constructor=b;b.h=function(h,k,m){for(var n=Array(arguments.length-2),p=2;p<arguments.length;p++)n[p-2]=arguments[p];return d.prototype[k].apply(h,n)}};function B(b,d,e="*"){function h(a){if(typeof a==="string")return F.encode(a).buffer;if(a instanceof ArrayBuffer)return a.slice(0);if(ArrayBuffer.isView(a))return a.buffer.slice(a.byteOffset,a.byteOffset+a.byteLength);throw Error("Invalid data type");}function k(a){a=h(a);var f={type:"send",data:new Uint8Array(a)},g;(g=r)==null||g.postMessage(f,[a])}function m(){if(!r)throw Error("Data port not captured yet.");r.onmessage=a=>{if(a.data.type==="message"){a=new MessageEvent("message",{data:G.decode(a.data.data)});
+let f;(f=c.onmessage)==null||f.call(c,a);c.dispatchEvent(a)}}}function n(){if(!t)throw Error("Control port not captured yet.");t.onmessage=a=>{switch(a.data.type){case "open":l=1;var f=new Event("open"),g;(g=c.onopen)==null||g.call(c,f);c.dispatchEvent(f);q.forEach(H=>{k(H)});q=[];break;case "close":g=a.data;l=3;g=new CloseEvent("close",{code:g.code,reason:g.reason,wasClean:g.wasClean});(f=c.onclose)==null||f.call(c,g);c.dispatchEvent(g);break;case "error":l=3;f=new Event("error");let x;(x=c.onerror)==
+null||x.call(c,f);c.dispatchEvent(f)}}}function p(a){return z(function*(){var f=new MessageChannel;t=f.port1;var g=new MessageChannel;r=g.port1;n();m();window.parent.postMessage({type:"websocket_open",portOrdering:["control","data"],url:b,protocols:a||[],connectionId:I},e,[f.port2,g.port2])}())}var c=Reflect.construct(EventTarget,[],new.target);c.CONNECTING=0;c.OPEN=1;c.CLOSING=2;c.CLOSED=3;c.url=b;c.binaryType="arraybuffer";c.protocol="";c.i="";var l=0,t=null,r=null,q=[],F=new TextEncoder,G=new TextDecoder;
+c.onopen=null;c.onmessage=null;c.onclose=null;c.onerror=null;Object.defineProperty(c,"readyState",{get:()=>l,enumerable:!0,configurable:!0});Object.defineProperty(c,"bufferedAmount",{get:()=>{var a=0;q.forEach(f=>{a+=typeof f==="string"?f.length:f.byteLength});return a},enumerable:!0,configurable:!0});var I=function(){var a;return((a=globalThis.crypto)==null?0:a.randomUUID)?globalThis.crypto.randomUUID():"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,f=>{var g=Math.random()*16|0;return(f===
+"x"?g:g&3|8).toString(16)})}();c.send=a=>{if(l===1)a instanceof Blob?a.arrayBuffer().then(f=>{k(f)}):k(a);else if(l===0)if(typeof a==="string")q.push(a);else if(a instanceof ArrayBuffer||ArrayBuffer.isView(a))q.push(h(a));else throw Error("Sending Blob is not supported before the connection is open.");else console.debug("WebSocket send called in CLOSING or CLOSED state; ignored.")};c.close=(a=1E3,f="")=>{if(l!==2&&l!==3){l=2;a={type:"close",code:a,reason:f,wasClean:a===1E3};var g;(g=t)==null||g.postMessage(a)}};
+Promise.resolve().then(()=>p(d));return c}A(B,EventTarget);var C=document.currentScript,D=C==null?void 0:C.getAttribute("ws-interception-config");if(!D)throw Error("WebSocket Interceptor: Missing ws-interception-config attribute in the script tag.");var E=JSON.parse(D);if(!E.parentOrigin||typeof E.parentOrigin!=="string")throw Error("WebSocket Interceptor: Invalid parentOrigin in ws-interception-config");
+(function(b){var d=Object.getOwnPropertyDescriptor(window,"WebSocket");if(!d||d.writable||d.configurable)d=Object.assign(function(e,h){try{let k=(new URL(e)).hostname;if(b.proxiedDomains.some(m=>k===m||k.endsWith(`.${m}`)))return new B(e,h,b.parentOrigin)}catch(k){throw window.parent.postMessage({type:"websocket_blocked",url:e,reason:"blocked_invalid_url"},b.parentOrigin),new DOMException(`WebSocket connection to '${e}' is not allowed in Canvas.`,"SecurityError");}window.parent.postMessage({type:"websocket_blocked",
+url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMException(`WebSocket connection to '${e}' is not allowed in Canvas.`,"SecurityError");},{CONNECTING:0,OPEN:1,CLOSING:2,CLOSED:3}),Object.defineProperty(window,"WebSocket",{value:d,writable:!1,configurable:!1})})({proxiedDomains:E.proxiedDomains||[],parentOrigin:E.parentOrigin});}).call(this);
+</script><script data-bard-client-injected="true">((function(modelInformation) {
+  const originalFetch = window.fetch;
+  // TODO: b/421908508 - Move these out of the script and match all generative AI model calls.
+  let googleLlmBaseApiUrls = [
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':streamGenerateContent',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':generateContent',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predict',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predictLongRunning',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageEditModelName + ':generateContent',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageTransformModelName + ':generateContent',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predict',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predictLongRunning',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.ttsModelName + ':generateContent',
+  ];
+  modelInformation.deprecatedTextModelNames.forEach((modelName) => {
+    googleLlmBaseApiUrls.push(
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
+    );
+  });
+  modelInformation.deprecatedImageModelNames.forEach((modelName) => {
+    googleLlmBaseApiUrls.push(
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':predict',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':predictLongRunning',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
+    );
+  });
+  modelInformation.deprecatedGenerateImageModelNames.forEach((modelName) => {
+    googleLlmBaseApiUrls.push(
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
+    );
+  });
+  modelInformation.deprecatedImageTransformModelNames.forEach((modelName) => {
+    googleLlmBaseApiUrls.push(
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
+    );
+  });
+
+  const pendingFetchResolvers = {};
+  let nextPromiseId = 0;
+
+  function handleStringInput(input, optionsArgument) {
+    const actualUrl = input;
+    const fetchCallArgs = [actualUrl, optionsArgument];
+    const effectiveOptions = optionsArgument || {};
+    const bodyForApiKeyCheck = effectiveOptions.body;
+    const bodyForPostMessage = effectiveOptions.body;
+    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
+  }
+
+  function handleRequestInput(input, optionsArgument) {
+    const actualUrl = input.url;
+    const fetchCallArgs = [input, optionsArgument];
+    const effectiveOptions = { method: input.method, headers: new Headers(input.headers) };
+    let bodyForApiKeyCheck;
+    let bodyForPostMessage;
+
+    if (optionsArgument) {
+      if (optionsArgument.method) effectiveOptions.method = optionsArgument.method;
+      if (optionsArgument.headers) effectiveOptions.headers = new Headers(optionsArgument.headers);
+      if ('body' in optionsArgument) {
+        bodyForApiKeyCheck = optionsArgument.body;
+        bodyForPostMessage = optionsArgument.body;
+      } else {
+        bodyForApiKeyCheck = undefined;
+        bodyForPostMessage = input.body;
+      }
+    } else {
+      bodyForApiKeyCheck = undefined;
+      bodyForPostMessage = input.body;
+    }
+    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
+  }
+
+  window.fetch = function(input, optionsArgument) {
+    let actualUrl;
+    let fetchCallArgs;
+    let effectiveOptions = {};
+    let bodyForApiKeyCheck;
+    let bodyForPostMessage;
+
+    if (typeof input === 'string') {
+      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleStringInput(input, optionsArgument));
+    } else if (input instanceof Request) {
+      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleRequestInput(input, optionsArgument));
+    } else {
+      return originalFetch.apply(window, [input, optionsArgument]);
     }
 
-    /* Sidebar Styling */
-    .sidebar {
-      width: 300px;
-      background-color: #242424;
-      border-right: 1px solid #333333;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
+    effectiveOptions.method = effectiveOptions.method || 'GET';
+    if (!effectiveOptions.headers) {
+      effectiveOptions.headers = new Headers();
     }
 
-    .section-title {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      color: #8e8e93;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
 
-    .card {
-      background-color: #2c2c2e;
-      border-radius: 8px;
-      padding: 14px;
-      border: 1px solid #3a3a3c;
-    }
+    if (typeof actualUrl === 'string' && googleLlmBaseApiUrls.some((url) => actualUrl.startsWith(url))) {
+      let apiKeyIsNull = true;
 
-    .status-badge {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      background-color: #30d158;
-      border-radius: 50%;
-      margin-right: 8px;
-    }
+      const regex = new RegExp("models/([^:]+)");
+      const modelNameMatch = actualUrl.match(regex);
+      const modelName = modelNameMatch ? modelNameMatch[1] : 'unspecified';
 
-    .card-title {
-      font-size: 14px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-    }
 
-    .card-subtitle {
-      font-size: 12px;
-      color: #8e8e93;
-      margin-top: 4px;
-      margin-left: 16px;
-    }
+      try {
+        const urlObject = new URL(actualUrl);  // Use URL object for robust parsing
+        const apiKeyParam = urlObject.searchParams.get('key');
+        if (apiKeyParam) {
+          apiKeyIsNull = false;
+        }
+      } catch (e) {
+        // Continue checks even if URL parsing fails
+      }
 
-    .feed-item {
-      margin-bottom: 12px;
-    }
+      if (apiKeyIsNull && effectiveOptions.headers) {
+        const h = new Headers(effectiveOptions.headers);
+        const apiKeyHeaderValue = h.get('X-API-Key') || h.get('x-api-key');
+        if (apiKeyHeaderValue) {
+          apiKeyIsNull = false;
+          return originalFetch.apply(window, fetchCallArgs);
+        }
+      }
 
-    .feed-item:last-child {
-      margin-bottom: 0;
-    }
+      if (apiKeyIsNull && effectiveOptions.method && ['POST', 'PUT', 'PATCH'].includes(effectiveOptions.method.toUpperCase()) && typeof bodyForApiKeyCheck === 'string') {
+        try {
+          const bodyData = JSON.parse(bodyForApiKeyCheck);
+          if (bodyData && bodyData.apiKey) {
+            apiKeyIsNull = false;
+            return originalFetch.apply(window, fetchCallArgs);
+          }
+        } catch (e) {
+          // Ignore JSON parsing errors
+        }
+      }
 
-    .feed-time {
-      font-size: 11px;
-      color: #8e8e93;
-      margin-bottom: 2px;
-    }
+      if(apiKeyIsNull) {
+        const promiseId = nextPromiseId++;
+        const promise = new Promise((resolve) => {
+          pendingFetchResolvers[promiseId] = (resolvedResponse) => {
+            delete pendingFetchResolvers[promiseId];
+            resolve(resolvedResponse);
+          };
+        });
 
-    .feed-text {
-      font-size: 13px;
-      color: #d1d1d6;
-    }
+        let serializedBodyForPostMessage;
+        if (typeof bodyForPostMessage === 'string' || bodyForPostMessage == null) {
+            serializedBodyForPostMessage = bodyForPostMessage;
+        } else if (bodyForPostMessage instanceof ReadableStream) {
+            serializedBodyForPostMessage = null;
+        } else {
+            try {
+                serializedBodyForPostMessage = JSON.stringify(bodyForPostMessage);
+            } catch (e) {
+                serializedBodyForPostMessage = null;
+            }
+        }
 
-    /* Main Area Styling */
-    .main-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
+        const messageOptions = {
+            method: effectiveOptions.method,
+            headers: Object.fromEntries(new Headers(effectiveOptions.headers).entries()),
+            body: serializedBodyForPostMessage
+        };
 
-    .header {
-      background-color: #e65100;
-      color: #ffffff;
-      padding: 16px 24px;
-      font-weight: 800;
-      font-size: 18px;
-      letter-spacing: 0.5px;
-    }
+        window.parent.postMessage({
+          type: 'requestFetch',
+          url: actualUrl,
+          modelName: modelName,
+          options: messageOptions,
+          promiseId: promiseId,
+        }, '*');
 
-    .workspace {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      text-align: center;
-      padding: 20px;
+        return promise;
+      }
+      return originalFetch.apply(window, fetchCallArgs);
     }
+    return originalFetch.apply(window, fetchCallArgs);
+  };
 
-    .workspace-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: #8e8e93;
-      letter-spacing: 1px;
+  window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'resolveFetch') {
+      const { promiseId, response } = event.data;
+      if (pendingFetchResolvers[promiseId]) {
+        try {
+          const reconstructedResponse = new Response(response.body, {
+            status: response.status,
+            statusText: response.statusText,
+            headers: new Headers(response.headers),
+          });
+          pendingFetchResolvers[promiseId](reconstructedResponse);
+        } catch (error) {
+          pendingFetchResolvers[promiseId](new Response(null, { status: 500, statusText: "Interceptor Response Reconstruction Error" }));
+        }
+      }
     }
+  });
 
-    .workspace-desc {
-      font-size: 13px;
-      color: #636366;
-      max-width: 420px;
-    }
+}))({"textModelName":"gemini-3-flash-preview","imageModelName":"imagen-4.0-generate-001","imageEditModelName":"gemini-3.1-flash-image","imageTransformModelName":"gemini-3-pro-image","videoModelName":"veo-2.0-generate-001","ttsModelName":"gemini-2.5-flash-preview-tts","deprecatedTextModelNames":["gemini-2.0-flash","gemini-2.5-flash","gemini-2.5-flash-preview-04-17","gemini-2.5-flash-preview-05-20","gemini-2.5-flash-preview-09-2025"],"deprecatedImageModelNames":["imagen-3.0-generate-001","imagen-3.0-generate-002"],"deprecatedGenerateImageModelNames":["gemini-2.5-flash-image-preview","gemini-2.5-flash-image","gemini-3.1-flash-image-preview"],"deprecatedImageTransformModelNames":["gemini-3-pro-image-preview-11-2025"]})</script><script data-bard-client-injected="true">(function(){'use strict';function a(){window.parent.postMessage({type:"interaction"},"*")}window.addEventListener("click",a,{capture:!0,passive:!0});window.addEventListener("touchstart",a,{capture:!0,passive:!0});window.addEventListener("keydown",a,{capture:!0,passive:!0});}).call(this);
+</script><script data-bard-client-injected="true">(function() {
+  const originalConsoleLog = console.log;
+  const originalConsoleError = console.error;
 
-    /* Launch Button Styling */
-    .btn-launch {
-      background: linear-gradient(180deg, #ff6d00 0%, #e65100 100%);
-      color: #ffffff;
-      border: none;
-      padding: 14px 28px;
-      font-size: 15px;
-      font-weight: 700;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(230, 81, 0, 0.4);
-      transition: transform 0.1s ease, box-shadow 0.1s ease;
-      text-decoration: none;
-      display: inline-block;
+    /**
+   * Normalizes an error event or a promise rejection reason into a structured error object.
+   * @param {*} errorEventOrReason The error object or reason.
+   * @return {object} Structured error data { message, name, stack }.
+   */
+  function getErrorObject(errorEventOrReason) {
+    if (errorEventOrReason instanceof Error) {
+      return {
+        message: errorEventOrReason.message,
+        name: errorEventOrReason.name,
+        stack: errorEventOrReason.stack,
+      };
     }
+    // Fallback for non-Error objects.
+    try {
+      return {
+        message: JSON.stringify(errorEventOrReason),
+        name: 'UnknownErrorType',
+        stack: null,
+      };
+    } catch (e) {
+      return {
+        message: String(errorEventOrReason),
+        name: 'UnknownErrorTypeNonStringifiable',
+        stack: null,
+      };
+    }
+  }
 
-    .btn-launch:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(230, 81, 0, 0.6);
-    }
+  /**
+   * Converts an array of arguments (from log/error) into a single string.
+   * Handles Error objects specially to include their message and stack.
+   * @param {Array<*>} args - Arguments passed to console methods.
+   * @return {string} A string representation of the arguments.
+   */
+  function stringifyArgs(args) {
+    return args
+      .map((arg) => {
+        if (arg instanceof Error) {
+          const {message, stack} = arg;
+          return `Error: ${message}${stack ? ('\nStack: ' + stack) : ''}`;
+        }
+        if (typeof arg === 'object' && arg !== null) {
+          try {
+            return JSON.stringify(arg);
+          } catch (error) {
+            return '[Circular Object]';
+          }
+        } else {
+          return String(arg);
+        }
+      })
+      .join(' ');
+  }
 
-    .btn-launch:active {
-      transform: translateY(1px);
+  console.log = function(...args) {
+    const logString = stringifyArgs(args);
+    window.parent.postMessage({ type: 'log', message: logString }, '*');
+    originalConsoleLog.apply(console, args);
+  };
+
+  console.error = function(...args) {
+    let errorData;
+    if (args.length > 0 && args[0] instanceof Error) {
+      const err = args[0];
+      // If the first arg is an Error, capture its details.
+      errorData = {
+        type: 'error',
+        source: 'CONSOLE_ERROR',
+        ...getErrorObject(err),
+        rawArgsString: stringifyArgs(args.slice(1)),
+        timestamp: new Date().toISOString(),
+      };
+    } else {
+      // If not an Error object, treat all args as a general error message.
+      errorData = {
+        type: 'error',
+        source: 'CONSOLE_ERROR',
+        message: stringifyArgs(args),
+        name: 'ConsoleLoggedError',
+        stack: null,
+        timestamp: new Date().toISOString(),
+      };
     }
-  </style>
+    window.parent.postMessage(errorData, '*');
+    originalConsoleError.apply(console, args);
+  };
+
+  // Listen for global unhandled synchronous errors.
+  window.addEventListener('error', function(event) {
+    const errorDetails = event.error ? getErrorObject(event.error) : {
+      message: event.message,
+      name: 'GlobalError',
+      stack: null,
+      filename: event.filename,
+      lineno: event.lineno,
+      colno: event.colno,
+    };
+
+    window.parent.postMessage({
+      type: 'error',
+      source: 'global',
+      ...errorDetails,
+      message: errorDetails.message || event.message,
+      timestamp: new Date().toISOString(),
+    }, '*');
+  });
+
+  // Listen for unhandled promise rejections (asynchronous errors).
+  window.addEventListener('unhandledrejection', function(event) {
+    const errorDetails = getErrorObject(event.reason);
+
+    window.parent.postMessage({
+      type: 'error',
+      source: 'unhandledrejection',
+      ...errorDetails,
+      message: errorDetails.message || 'Unhandled Promise Rejection',
+      timestamp: new Date().toISOString(),
+    }, '*');
+  });
+
+})();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abundance &amp; Health AI Command Center</title>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #121316;
+            --sidebar-bg: #1a1c20;
+            --card-bg: #232529;
+            --card-border: #2d3036;
+            --card-hover: #2f3238;
+            --brand-orange: #ff6600;
+            --brand-orange-hover: #e05500;
+            --brand-orange-glow: rgba(255, 102, 0, 0.35);
+            --text-main: #FFFFFF;
+            --text-muted: #8A8D91;
+            --text-sub: #9AA0A6;
+            --status-green: #2ECC71;
+            --status-amber: #F39C12;
+            --status-red: #E74C3C;
+            --titlebar-bg: #ff6600;
+            --modal-bg: #1e2024;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* TOP ORANGE TITLEBAR */
+        .window-header {
+            background-color: var(--titlebar-bg);
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            user-select: none;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .window-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+
+        .window-logo {
+            width: 22px;
+            height: 22px;
+            background: #FFFFFF;
+            color: var(--brand-orange);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .window-controls {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 13px;
+        }
+
+        .header-copy-btn {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #FFFFFF;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .header-copy-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: #FFFFFF;
+        }
+
+        .window-controls i {
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .window-controls i:hover {
+            color: #FFFFFF;
+        }
+
+        /* MAIN LAYOUT GRID */
+        .app-container {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 42px);
+            overflow: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 320px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--card-border);
+            display: flex;
+            flex-direction: column;
+            padding: 18px 16px;
+            gap: 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        /* CONNECTION CARDS */
+        .connection-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .connection-card {
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            transition: border-color 0.2s;
+        }
+
+        .connection-card:hover {
+            border-color: #3f434a;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .status-indicator.active {
+            background-color: var(--status-green);
+            box-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
+        }
+
+        .connection-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow: hidden;
+        }
+
+        .connection-name {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .connection-sub {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        /* INTERACTIVE METRICS PANELS WITH HOVER CUES & GLOW EFFECTS */
+        .metrics-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+        }
+
+        /* Subtle Glow & Hover Cues */
+        .metric-card:hover {
+            background: var(--card-hover);
+            border-color: var(--brand-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--brand-orange-glow);
+        }
+
+        .metric-card.alert {
+            border-left: 3px solid var(--status-amber);
+        }
+
+        .metric-card.alert:hover {
+            border-color: var(--status-amber);
+            border-left: 4px solid var(--brand-orange);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.25);
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: var(--text-sub);
+            font-weight: 500;
+        }
+
+        .click-hint {
+            font-size: 10px;
+            color: var(--brand-orange);
+            font-weight: 700;
+            opacity: 0.85;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+
+        .metric-card:hover .click-hint {
+            opacity: 1;
+            transform: translateX(2px);
+        }
+
+        .metric-value-row {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .metric-unit {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .metric-sub {
+            font-size: 11px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .text-success { color: var(--status-green); }
+        .text-warning { color: var(--status-amber); }
+
+        /* LIVE ACTIVITY FEED */
+        .activity-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 12px 14px;
+        }
+
+        .activity-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .activity-item:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .activity-time {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .activity-text {
+            font-size: 12px;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+
+        /* MAIN WORKSPACE AREA */
+        .workspace-main {
+            flex: 1;
+            background-color: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .workspace-hero {
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .workspace-title {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+            text-transform: uppercase;
+        }
+
+        .workspace-subtitle {
+            font-size: 14px;
+            color: var(--text-sub);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .launch-btn {
+            background-color: var(--brand-orange);
+            color: #FFFFFF;
+            border: none;
+            padding: 14px 32px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 20px var(--brand-orange-glow);
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .launch-btn:hover {
+            background-color: var(--brand-orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(255, 102, 0, 0.5);
+        }
+
+        .launch-btn:active {
+            transform: translateY(0);
+        }
+
+        .platform-badge {
+            position: absolute;
+            bottom: 24px;
+            font-size: 11px;
+            color: var(--text-muted);
+            background: var(--card-bg);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-container {
+            background-color: var(--modal-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1050px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            transform: translateY(15px);
+            transition: transform 0.25s ease;
+            overflow: hidden;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 18px 24px;
+            background-color: #17181c;
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-title-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255, 102, 0, 0.15);
+            color: var(--brand-orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .modal-subtitle {
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 6px;
+            transition: all 0.15s;
+        }
+
+        .modal-close-btn:hover {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* MODAL TOOLBAR */
+        .modal-toolbar {
+            padding: 12px 24px;
+            background: #1a1c20;
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 6px;
+            background: var(--card-bg);
+            padding: 4px;
+            border-radius: 6px;
+            border: 1px solid var(--card-border);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-sub);
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .tab-btn.active {
+            background: var(--brand-orange);
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 280px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            padding: 6px 12px 6px 30px;
+            color: var(--text-main);
+            font-size: 12px;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--brand-orange);
+        }
+
+        .modal-body {
+            padding: 20px 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* COLUMN GRID FOR WAREHOUSE STOCK */
+        .columns-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .stock-column {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .column-header {
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .column-title {
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stock-list {
+            display: flex;
+            flex-direction: column;
+            max-height: 460px;
+            overflow-y: auto;
+        }
+
+        .stock-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stock-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow: hidden;
+        }
+
+        .product-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-sku {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        .store-pill {
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 2px;
+        }
+
+        .store-pill.ah { background: rgba(52, 152, 219, 0.2); color: #3498db; }
+        .store-pill.ne { background: rgba(155, 89, 182, 0.2); color: #9b59b6; }
+
+        .stock-count-group {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2px;
+        }
+
+        .stock-qty {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .badge {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .badge.in-stock { background: rgba(46, 204, 113, 0.15); color: var(--status-green); }
+        .badge.low-stock { background: rgba(243, 156, 18, 0.15); color: var(--status-amber); }
+        .badge.out-stock { background: rgba(231, 76, 60, 0.15); color: var(--status-red); }
+
+        /* ORDERS TABLE */
+        .orders-table-container {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        .orders-table th {
+            background: #17181c;
+            padding: 12px 16px;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .orders-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-sub);
+        }
+
+        .orders-table tr:hover td {
+            background: var(--card-hover);
+        }
+
+        .order-id {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .order-time-tag {
+            color: var(--status-amber);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .action-btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .table-btn {
+            background: #2b2e34;
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 4px 10px;
+            font-size: 11px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+        }
+
+        .table-btn:hover {
+            background: var(--brand-orange);
+            border-color: var(--brand-orange);
+            color: #FFFFFF;
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 820px) {
+            .columns-grid {
+                grid-template-columns: 1fr;
+            }
+            .app-container {
+                flex-direction: column;
+                overflow-y: auto;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--card-border);
+            }
+            .workspace-main {
+                padding: 60px 20px;
+            }
+            .workspace-title {
+                font-size: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Left Sidebar -->
-  <div class="sidebar">
-    <div>
-      <div class="section-title">Live Connections</div>
-      <div class="card">
-        <div class="card-title"><span class="status-badge"></span>Shopify UK</div>
-        <div class="card-subtitle">Connected • Active via Composio</div>
-      </div>
-    </div>
-
-    <div>
-      <div class="section-title">Live Activity Feed</div>
-      <div class="card">
-        <div class="feed-item">
-          <div class="feed-time">Just now</div>
-          <div class="feed-text">Shopify UK webhook listener initialized.</div>
+    <!-- WINDOW HEADER (BRIGHT ORANGE HEADER BAR) -->
+    <header class="window-header">
+        <div class="window-title">
+            <div class="window-logo">A+H</div>
+            <span>Abundance &amp; Health AI Command Center</span>
         </div>
-        <div class="feed-item">
-          <div class="feed-time">2 mins ago</div>
-          <div class="feed-text">Order #1042 sync verified with J&J.</div>
+        <div class="window-controls">
+            <button class="header-copy-btn" onclick="copyAppCode()" id="copy-code-btn">
+                <i class="fa-regular fa-copy"></i> Copy Code
+            </button>
+            <i class="fa-regular fa-clone" title="Copy App URL" onclick="copyAppUrl()"></i>
+            <i class="fa-solid fa-ellipsis-vertical" title="Options"></i>
+            <i class="fa-solid fa-minus" title="Minimize"></i>
+            <i class="fa-regular fa-square" title="Maximize"></i>
+            <i class="fa-solid fa-xmark" title="Close"></i>
         </div>
-      </div>
+    </header>
+
+    <div class="app-container">
+        
+        <!-- LEFT SIDEBAR -->
+        <aside class="sidebar">
+            
+            <!-- 1. LIVE CONNECTIONS SECTION -->
+            <div class="sidebar-section">
+                <h2 class="section-title">LIVE CONNECTIONS</h2>
+                <div class="connection-list">
+                    
+                    <!-- Connection 1: Shopify - Abundance & Health -->
+                    <div class="connection-card">
+                        <div class="status-indicator active"></div>
+                        <div class="connection-info">
+                            <div class="connection-name">Shopify - Abundance &amp; Health</div>
+                            <div class="connection-sub">Connected • Active via Composio</div>
+                        </div>
+                    </div>
+
+                    <!-- Connection 2: Shopify - Neutrient -->
+                    <div class="connection-card">
+                        <div class="status-indicator active"></div>
+                        <div class="connection-info">
+                            <div class="connection-name">Shopify - Neutrient</div>
+                            <div class="connection-sub">Connected • Active via Composio</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 2. STORE METRICS SECTION (ABOVE ACTIVITY FEED) -->
+            <div class="sidebar-section">
+                <h2 class="section-title">STORE METRICS (CLICK TO EXPAND)</h2>
+                <div class="metrics-grid">
+                    
+                    <!-- Current Stock Panel (Interactive Card) -->
+                    <div class="metric-card" onclick="openStockModal()" title="Click for SKU breakdown in UK &amp; Europe">
+                        <div class="metric-header">
+                            <span class="metric-label">Current Stock</span>
+                            <span class="click-hint"><i class="fa-solid fa-chart-column"></i> SKU View <i class="fa-solid fa-chevron-right" style="font-size: 8px;"></i></span>
+                        </div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="stock-count">9,840</span>
+                            <span class="metric-unit">units</span>
+                        </div>
+                        <div class="metric-sub text-success">
+                            <i class="fa-solid fa-circle" style="font-size: 6px;"></i> Optimal across UK &amp; EU warehouses
+                        </div>
+                    </div>
+
+                    <!-- Orders Pending After 24 Hours Panel (Interactive Alert Card) -->
+                    <div class="metric-card alert" onclick="openOrdersModal()" title="Click to view pending orders list">
+                        <div class="metric-header">
+                            <span class="metric-label">Orders Pending (&gt;24h)</span>
+                            <span class="click-hint"><i class="fa-solid fa-list-check"></i> Inspect <i class="fa-solid fa-chevron-right" style="font-size: 8px;"></i></span>
+                        </div>
+                        <div class="metric-value-row">
+                            <span class="metric-value text-warning" id="pending-count">3</span>
+                            <span class="metric-unit">orders</span>
+                        </div>
+                        <div class="metric-sub text-warning">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Requires fulfillment review
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 3. LIVE ACTIVITY FEED SECTION -->
+            <div class="sidebar-section">
+                <h2 class="section-title">LIVE ACTIVITY FEED</h2>
+                <div class="activity-feed" id="activity-feed">
+                    <div class="activity-item">
+                        <span class="activity-time">Just now</span>
+                        <p class="activity-text">Neutrient webhook listener initialized.</p>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-time">2 mins ago</span>
+                        <p class="activity-text">Abundance &amp; Health Order #1042 sync verified with J&amp;J.</p>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-time">12 mins ago</span>
+                        <p class="activity-text">Composio MCP session active for dual-store routing.</p>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- MAIN WORKSPACE CONTENT -->
+        <main class="workspace-main">
+            <div class="workspace-hero">
+                <h1 class="workspace-title">ABUNDANCE &amp; HEALTH AI COMMAND CENTER</h1>
+                <p class="workspace-subtitle">Your Composio Shopify integrations are active and ready in Claude Desktop &amp; Mobile.</p>
+                
+                <!-- Launch Button with Mobile/Desktop Dual Routing -->
+                <button class="launch-btn" id="launch-btn" onclick="launchClaudeSession()">
+                    🚀 Launch Claude Session
+                </button>
+            </div>
+
+            <div class="platform-badge" id="platform-badge"><i class="fa-solid fa-desktop"></i> Desktop Detected • Routing to Claude Web (https://claude.ai)</div>
+        </main>
+
     </div>
-  </div>
 
-  <!-- Right Main Area -->
-  <div class="main-content">
-    <div class="header">ABUNDANCE & HEALTH AI COMMAND CENTER</div>
+    <!-- MODAL 1: SKU STOCK BREAKDOWN OVERLAY -->
+    <div class="modal-overlay" id="stock-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <div class="modal-title-icon">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                    </div>
+                    <div>
+                        <div class="modal-title">SKU Warehouse Breakdown</div>
+                        <div class="modal-subtitle">Live stock distribution across UK and European fulfillment centers</div>
+                    </div>
+                </div>
+                <button class="modal-close-btn" onclick="closeStockModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
 
-    <div class="workspace">
-      <div class="workspace-title">AI ASSISTANT WORKSPACE</div>
-      <div class="workspace-desc">Your Composio Shopify integrations are active and ready in Claude.</div>
-      <button class="btn-launch" onclick="window.open('https://claude.ai', '_blank')">🚀 Launch Claude Session</button>
+            <!-- Modal Toolbar -->
+            <div class="modal-toolbar">
+                <div class="filter-tabs">
+                    <button class="tab-btn active" onclick="filterStockStore('ALL', this)">All Stores</button>
+                    <button class="tab-btn" onclick="filterStockStore('AH', this)">Abundance &amp; Health</button>
+                    <button class="tab-btn" onclick="filterStockStore('NE', this)">Neutrient</button>
+                </div>
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" class="search-input" id="stock-search" placeholder="Search product or SKU..." oninput="renderStockTables()">
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <!-- Side-by-Side UK and Europe Warehouse Columns -->
+                <div class="columns-grid">
+                    
+                    <!-- UK Warehouse Column -->
+                    <div class="stock-column">
+                        <div class="column-header">
+                            <span class="column-title"><i class="fa-solid fa-warehouse text-warning"></i> UK Stock (Warehouse)</span>
+                            <span class="badge in-stock" id="uk-total-badge">5,420 Units</span>
+                        </div>
+                        <div class="stock-list" id="uk-stock-list">
+                            <!-- JS Populated -->
+                        </div>
+                    </div>
+
+                    <!-- Europe Warehouse Column -->
+                    <div class="stock-column">
+                        <div class="column-header">
+                            <span class="column-title"><i class="fa-solid fa-warehouse text-success"></i> Europe Stock (Warehouse)</span>
+                            <span class="badge in-stock" id="eu-total-badge">4,420 Units</span>
+                        </div>
+                        <div class="stock-list" id="eu-stock-list">
+                            <!-- JS Populated -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-</body>
-</html>
+    <!-- MODAL 2: PENDING ORDERS (>24H) OVERLAY -->
+    <div class="modal-overlay" id="orders-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <div class="modal-title-icon" style="background: rgba(243, 156, 18, 0.15); color: var(--status-amber);">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                    <div>
+                        <div class="modal-title">Orders Pending &gt; 24 Hours</div>
+                        <div class="modal-subtitle">Orders requiring manual review or warehouse fulfillment trigger</div>
+                    </div>
+                </div>
+                <button class="modal-close-btn" onclick="closeOrdersModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Modal Toolbar -->
+            <div class="modal-toolbar">
+                <div class="filter-tabs">
+                    <button class="tab-btn active" onclick="filterOrderStore('ALL', this)">All Stores</button>
+                    <button class="tab-btn" onclick="filterOrderStore('AH', this)">Abundance &amp; Health</button>
+                    <button class="tab-btn" onclick="filterOrderStore('NE', this)">Neutrient</button>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="orders-table-container">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Store</th>
+                                <th>Customer</th>
+                                <th>Pending Time</th>
+                                <th>Items</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table-body">
+                            <!-- JS Populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Mock for SKU Warehouse Stock Breakdown
+        const stockData = [
+            { id: 1, name: "Altrient C Liposomal Vitamin C", sku: "ALT-C-1000", store: "AH", storeName: "Abundance & Health", uk: 2450, eu: 1890 },
+            { id: 2, name: "Neutrient Total C Powder 300g", sku: "NEU-TC-300", store: "NE", storeName: "Neutrient", uk: 820, eu: 640 },
+            { id: 3, name: "Altrient B Liposomal Vitamin B", sku: "ALT-B-COMP", store: "AH", storeName: "Abundance & Health", uk: 110, eu: 850 },
+            { id: 4, name: "Neutrient D3+K2 Oral Spray", sku: "NEU-D3K2-50", store: "NE", storeName: "Neutrient", uk: 1450, eu: 420 },
+            { id: 5, name: "Altrient Glutathione Liposomal", sku: "ALT-GSH-450", store: "AH", storeName: "Abundance & Health", uk: 45, eu: 380 },
+            { id: 6, name: "Neutrient Magnesium Liposomal 150ml", sku: "NEU-MAG-150", store: "NE", storeName: "Neutrient", uk: 545, eu: 240 }
+        ];
+
+        // Data Mock for Orders Pending (>24h)
+        const pendingOrdersData = [
+            { id: "#AH-1048", store: "AH", storeName: "Abundance & Health", customer: "Sarah Jenkins", ageHours: "31h ago", items: "2x Altrient C", amount: "£89.90", link: "https://abundance-and-health.myshopify.com/admin/orders" },
+            { id: "#NE-8821", store: "NE", storeName: "Neutrient", customer: "Marcus Vance", ageHours: "28h ago", items: "1x Neutrient D3+K2", amount: "£24.50", link: "https://ah-neutrient.myshopify.com/admin/orders" },
+            { id: "#AH-1041", store: "AH", storeName: "Abundance & Health", customer: "Elena Rostova", ageHours: "42h ago", items: "3x Altrient B", amount: "£134.70", link: "https://abundance-and-health.myshopify.com/admin/orders" }
+        ];
+
+        let currentStockFilter = 'ALL';
+        let currentOrderFilter = 'ALL';
+
+        // Modal Handlers
+        function openStockModal() {
+            document.getElementById('stock-modal').classList.add('active');
+            renderStockTables();
+        }
+
+        function closeStockModal() {
+            document.getElementById('stock-modal').classList.remove('active');
+        }
+
+        function openOrdersModal() {
+            document.getElementById('orders-modal').classList.add('active');
+            renderOrdersTable();
+        }
+
+        function closeOrdersModal() {
+            document.getElementById('orders-modal').classList.remove('active');
+        }
+
+        // Close modal when clicking background overlay
+        window.onclick = function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                e.target.classList.remove('active');
+            }
+        };
+
+        // Render Side-by-Side Stock Columns
+        function renderStockTables() {
+            const searchTerm = document.getElementById('stock-search').value.toLowerCase();
+            const ukList = document.getElementById('uk-stock-list');
+            const euList = document.getElementById('eu-stock-list');
+            
+            ukList.innerHTML = '';
+            euList.innerHTML = '';
+
+            let ukTotal = 0;
+            let euTotal = 0;
+
+            stockData.forEach(item => {
+                const matchesStore = currentStockFilter === 'ALL' || item.store === currentStockFilter;
+                const matchesSearch = item.name.toLowerCase().includes(searchTerm) || item.sku.toLowerCase().includes(searchTerm);
+
+                if (matchesStore && matchesSearch) {
+                    ukTotal += item.uk;
+                    euTotal += item.eu;
+
+                    ukList.innerHTML += createStockRowHTML(item, item.uk);
+                    euList.innerHTML += createStockRowHTML(item, item.eu);
+                }
+            });
+
+            document.getElementById('uk-total-badge').textContent = `${ukTotal.toLocaleString()} Units`;
+            document.getElementById('eu-total-badge').textContent = `${euTotal.toLocaleString()} Units`;
+        }
+
+        function createStockRowHTML(item, qty) {
+            let statusBadge = '<span class="badge in-stock">In Stock</span>';
+            if (qty <= 150 && qty > 0) {
+                statusBadge = '<span class="badge low-stock">Low Stock</span>';
+            } else if (qty === 0) {
+                statusBadge = '<span class="badge out-stock">Out of Stock</span>';
+            }
+
+            const pillClass = item.store === 'AH' ? 'ah' : 'ne';
+
+            return `
+                <div class="stock-item">
+                    <div class="product-meta">
+                        <span class="product-name">${item.name}</span>
+                        <span class="product-sku">SKU: ${item.sku}</span>
+                        <span class="store-pill ${pillClass}">${item.storeName}</span>
+                    </div>
+                    <div class="stock-count-group">
+                        <span class="stock-qty">${qty.toLocaleString()}</span>
+                        ${statusBadge}
+                    </div>
+                </div>
+            `;
+        }
+
+        function filterStockStore(store, btn) {
+            currentStockFilter = store;
+            const buttons = btn.parentElement.querySelectorAll('.tab-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderStockTables();
+        }
+
+        // Render Pending Orders Table
+        function renderOrdersTable() {
+            const tbody = document.getElementById('orders-table-body');
+            tbody.innerHTML = '';
+
+            pendingOrdersData.forEach(order => {
+                if (currentOrderFilter === 'ALL' || order.store === currentOrderFilter) {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td class="order-id">${order.id}</td>
+                            <td><span class="store-pill ${order.store === 'AH' ? 'ah' : 'ne'}">${order.storeName}</span></td>
+                            <td>${order.customer}</td>
+                            <td><span class="order-time-tag"><i class="fa-regular fa-clock"></i> ${order.ageHours}</span></td>
+                            <td>${order.items}</td>
+                            <td>${order.amount}</td>
+                            <td>
+                                <div class="action-btn-group">
+                                    <a href="${order.link}" target="_blank" class="table-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Admin</a>
+                                    <button class="table-btn" onclick="promptClaudeForOrder('${order.id}')"><i class="fa-solid fa-robot"></i> Query</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }
+            });
+        }
+
+        function filterOrderStore(store, btn) {
+            currentOrderFilter = store;
+            const buttons = btn.parentElement.querySelectorAll('.tab-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderOrdersTable();
+        }
+
+        function promptClaudeForOrder(orderId) {
+            closeOrdersModal();
+            launchClaudeSession();
+        }
+
+        // Platform Detection and Dual Routing Logic
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                || (window.innerWidth <= 768);
+        }
+
+        function updatePlatformBadge() {
+            const badge = document.getElementById('platform-badge');
+            if (isMobileDevice()) {
+                badge.innerHTML = '<i class="fa-solid fa-mobile-screen-button"></i> Mobile Detected • Routing to Claude App (claude://)';
+            } else {
+                badge.innerHTML = '<i class="fa-solid fa-desktop"></i> Desktop Detected • Routing to Claude Web (https://claude.ai)';
+            }
+        }
+
+        function launchClaudeSession() {
+            if (isMobileDevice()) {
+                window.location.href = "claude://";
+                setTimeout(function() {
+                    window.location.href = "https://claude.ai";
+                }, 1500);
+            } else {
+                window.open("https://claude.ai", "_blank");
+            }
+        }
+
+        // Utility: Copy Full Document Code
+        function copyAppCode() {
+            const sourceCode = document.documentElement.outerHTML;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = sourceCode;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const btn = document.getElementById('copy-code-btn');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+            }, 2000);
+        }
+
+        // Utility: Copy URL
+        function copyAppUrl() {
+            const tempInput = document.createElement('input');
+            tempInput.value = window.location.href;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            
+            const badge = document.getElementById('platform-badge');
+            const originalText = badge.innerHTML;
+            badge.innerHTML = '<i class="fa-solid fa-check" style="color: var(--status-green);"></i> Command Center URL copied to clipboard!';
+            setTimeout(() => {
+                badge.innerHTML = originalText;
+            }, 2500);
+        }
+
+        // Lifecycle Hooks
+        window.onload = function() {
+            updatePlatformBadge();
+        };
+
+        window.onresize = function() {
+            updatePlatformBadge();
+        };
+    </script>
+
+</body></html>
